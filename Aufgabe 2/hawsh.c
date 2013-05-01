@@ -1,18 +1,29 @@
 #include <stdio.h>
-#include <fcntl.h> // creat
-#include <string.h> // strlen
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
+
+#if _WIN32
+    #define getcwd _getcwd
+#endif // _WIN32
 
 int main (void) {
 
-	char date[] = "??.?? ??:??";
-	char user[] = "moritz";
-	char workingdir[] = "/home/User/moritz";
+	// get current working directory
+	char* cwd;
+    cwd = getcwd(0, 0);
 
+    // get current user
+    char* user = getlogin();
+
+    // reserved for user input
 	char command[100];
 
 	while(1) {
 		// promt
-		printf("[%s] %s@%s - ", date, user, workingdir);
+        printFormatedDate("[", "]");
+		printf(" %s@%s - ", user, cwd);
 		fgets(command, sizeof(command), stdin);
 
 		// remove new line
@@ -27,4 +38,18 @@ int main (void) {
 			printf("TODO\n");
 		}
 	}
+}
+
+/**
+ * Print a formated date string
+ */
+int printFormatedDate (char* prefix, char* suffix) {
+    time_t ct;
+    struct tm *ts;
+    
+    ct = time(NULL);
+    ts = localtime(&ct);
+    
+    printf("%s%d.%d.%d %d:%d%s", prefix, ts->tm_mday, ts->tm_mon, ts->tm_year + 1900, ts->tm_hour, ts->tm_min, suffix);
+    return 0;
 }
