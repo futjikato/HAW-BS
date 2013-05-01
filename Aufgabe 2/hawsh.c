@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <errno.h>
 
 #if _WIN32
     #define getcwd _getcwd
@@ -11,8 +12,7 @@
 int main (void) {
 
 	// get current working directory
-	char* cwd;
-    cwd = getcwd(0, 0);
+	char* cwd = getcwd(0, 0);
 
     // get current user
     char* user = getlogin();
@@ -20,7 +20,8 @@ int main (void) {
     // reserved for user input
 	char command[100];
 
-	while(1) {
+	int running = 1;
+	while(running) {
 		// promt
         printFormatedDate("[", "]");
 		printf(" %s@%s - ", user, cwd);
@@ -31,13 +32,31 @@ int main (void) {
 
 		// check if command is "build-in"
 		if(strcmp(command, "quit") == 0) {
-			return 0;
+			running = 0;
+			puts("Bye, bye.");
 		} else if(strcmp(command, "version") == 0) {
 			printf("HAW-Shell Version 0.1 (c) TeamNahme 2013\n");
+		} else if(command[0] == '/') {
+			if(chdir(command) != 0) {
+				printf("Unable to change dir : %s\n", strerror(errno));
+			} else {
+				cwd = command;
+			}
+		} else if(command[strlen(command) - 1] == '&') {
+			// create new thread for command
+			puts("Start new thread for given command");
+			command[strlen(command) - 1] = 0;
 		} else {
-			printf("TODO\n");
+			int pid = fork();
+			if(pid == 0) {
+				execve(command, 0, 0);
+			} else {
+				waitpid(pid, 0, 0);
+			} 
 		}
 	}
+
+	return 0;
 }
 
 /**
