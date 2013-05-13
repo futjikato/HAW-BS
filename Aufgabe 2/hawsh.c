@@ -3,14 +3,15 @@
 #include <string.h>
 #include <errno.h>
 #include <time.h>
-#include <unistd.h>
 
 #ifdef _WIN32
 #include <windows.h>
 #include <direct.h>
 #define USERENV "USERNAME"
 #define chdir _chdir
+#define getcwd _getcwd
 #else
+#include <unistd.h>
 #define USERENV "USER"
 #endif
 
@@ -22,16 +23,9 @@ int main(int argc, char* argv[])
 {
 	char* user = getenv(USERENV);
 	char command[255];
-	char* cwd = (char*)malloc(255);
-	char* occurrence;
+	char cwd[255];
 
-#ifdef _WIN32
-	strcpy(cwd, argv[0]);
-	occurrence = strrchr(cwd, '\\');
-	cwd[occurrence - cwd] = 0;
-#else
 	getcwd(cwd, 255);
-#endif
 	
 	while (1) {
 		printPrompt(user, cwd);
@@ -49,9 +43,10 @@ int main(int argc, char* argv[])
 			if (chdir(command) != 0) {
 				printf("Unable to change dir : %s\n", strerror(errno));
 			} else {
-				cwd = command;
+				strcpy(cwd, command);
 			}
 		} else if (command[strlen(command) - 1] == '&') {
+#ifndef _WIN32
 			// create new thread for command
 			command[strlen(command) - 1] = 0;
 			int pid = fork();
@@ -59,6 +54,7 @@ int main(int argc, char* argv[])
 				execvp(command, (char *[]){command, NULL});
 				perror("execvp");
 			}
+#endif
 		} else if (strlen(command) == 0) {
 			continue;
 		} else {
