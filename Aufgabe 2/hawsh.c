@@ -42,7 +42,10 @@ int main(int argc, char* argv[])
 		} else if (strcmp(command, "version") == 0) {
 			printf("HAW-Shell Version 0.1 (c) TeamNahme 2013\n");
 		} else if (command[0] == '/') {
-			if (chdir(command + 1) != 0) {
+			#ifdef _WIN32
+				strcpy(command, command + 1);
+			#endif
+			if (chdir(command) != 0) {
 				printf("Unable to change dir : %s\n", strerror(errno));
 			} else {
 				cwd = command;
