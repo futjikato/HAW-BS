@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include <direct.h>
 #include <time.h>
 
 #ifdef _WIN32
 #include <windows.h>
+#include <direct.h>
 #define USERENV "USERNAME"
 #define chdir _chdir
 #else
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 	occurrence = strrchr(cwd, '\\');
 	cwd[occurrence - cwd] = 0;
 #else
-	cwd = getcwd(0, 0);
+	getcwd(cwd, 255);
 #endif
 	
 	while (1) {
@@ -42,21 +42,11 @@ int main(int argc, char* argv[])
 		} else if (strcmp(command, "version") == 0) {
 			printf("HAW-Shell Version 0.1 (c) TeamNahme 2013\n");
 		} else if (command[0] == '/') {
-#ifdef _WIN32
-			char tmp[255];
-			strcpy(tmp, command + 1);
-			if (chdir(tmp) != 0) {
-				printf("Unable to change dir : %s\n", strerror(errno));
-			} else {
-				strcpy(cwd, tmp);
-			}
-#else
-			if (chdir(command) != 0) {
+			if (chdir(command + 1) != 0) {
 				printf("Unable to change dir : %s\n", strerror(errno));
 			} else {
 				cwd = command;
 			}
-#endif
 		} else if (command[strlen(command) - 1] == '&') {
 			// create new thread for command
 			puts("Start new thread for given command");
