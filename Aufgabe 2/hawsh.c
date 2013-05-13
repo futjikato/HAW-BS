@@ -3,6 +3,7 @@
 #include <string.h>
 #include <errno.h>
 #include <time.h>
+#include <unistd.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -42,9 +43,9 @@ int main(int argc, char* argv[])
 		} else if (strcmp(command, "version") == 0) {
 			printf("HAW-Shell Version 0.1 (c) TeamNahme 2013\n");
 		} else if (command[0] == '/') {
-			#ifdef _WIN32
+#ifdef _WIN32
 				strcpy(command, command + 1);
-			#endif
+#endif
 			if (chdir(command) != 0) {
 				printf("Unable to change dir : %s\n", strerror(errno));
 			} else {
@@ -52,8 +53,11 @@ int main(int argc, char* argv[])
 			}
 		} else if (command[strlen(command) - 1] == '&') {
 			// create new thread for command
-			puts("Start new thread for given command");
 			command[strlen(command) - 1] = 0;
+			int pid = fork();
+			if(pid == 0) {
+				execvp(command, (char *[]){command, NULL});
+			}
 		} else if (strlen(command) == 0) {
 			continue;
 		} else {
@@ -70,7 +74,8 @@ int main(int argc, char* argv[])
 #else
 			int pid = fork();
 			if(pid == 0) {
-				execve(command, 0, 0);
+				execvp(command, (char *[]){command, NULL});
+				perror("execvp");
 			} else {
 				waitpid(pid, 0, 0);
 			}
