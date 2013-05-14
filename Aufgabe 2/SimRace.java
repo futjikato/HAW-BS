@@ -44,7 +44,7 @@ public class SimRace {
 class Car extends Thread implements Comparable<Car> {
 	private int runden;
 	public int nummer;
-	public long gesamtFahrzeit = 0;
+	public int gesamtFahrzeit = 0;
 
 	Car(int nummer, int runden) {
 		this.nummer = nummer;
@@ -65,13 +65,7 @@ class Car extends Thread implements Comparable<Car> {
 
 	@Override
 	public int compareTo(Car o) {
-		if (gesamtFahrzeit > o.gesamtFahrzeit) {
-			return 1;
-		} else if (gesamtFahrzeit == o.gesamtFahrzeit) {
-			return 0;
-		} else {
-			return -1;
-		}
+		return gesamtFahrzeit - o.gesamtFahrzeit;
 	}
 }
 
