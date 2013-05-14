@@ -1,2 +1,7 @@
 .DS_Store
 hawsh
+/bin
+.classpath
+.idea/
+.project
+HAW-BS.iml
