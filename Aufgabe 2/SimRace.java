@@ -52,10 +52,10 @@ class Car extends Thread implements Comparable<Car> {
 	}
 
 	public void run() {
-		for (int i = 0; i < runden; i++) {
+		for (int i = 0; i < runden && !isInterrupted(); i++) {
+			long zeit = (long)(Math.random() * 100);
+			gesamtFahrzeit += zeit;
 			try {
-				long zeit = (long)(Math.random() * 100);
-				gesamtFahrzeit += zeit;
 				Thread.sleep(zeit);
 			} catch (InterruptedException e) {
 				interrupt();
