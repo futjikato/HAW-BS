@@ -15,12 +15,6 @@ public class Agent extends Thread {
 
     private Ingredient availableIngredientNo2;
 
-    private List<Smoker> smokers;
-
-    public void addSmokers(List<Smoker> smokers) {
-        this.smokers = smokers;
-    }
-
     @Override
     public void run() {
         refresh();

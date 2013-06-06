@@ -1,3 +1,30 @@
+/**
+ * @startuml
+ * enum Ingredient
+ *
+ * Simulation -- Agent
+ * Simulation -- Smoker
+ * Ingredient -- Agent
+ * Ingredient -- Smoker
+ *
+ * Simulation:void start()
+ * Simulation:List<Smoker> smokers
+ * Simulation:Agent agent
+ *
+ * Agent:Ingredient availableIngredientNo1
+ * Agent:Ingredient availableIngredientNo2
+ * Agent:Collection<Ingredient> getAvailableIngredients()
+ * Agent:void refresh()
+ *
+ * Ingredient:Tobacco
+ * Ingredient:Paper
+ * Ingredient:Matches
+ *
+ * Smoker:Ingredient availableIngredient
+ * Smoker:Agent agent
+ * Smoker:void run()
+ * @enduml
+ */
 package de.haw.bs.p3.smoker;
 
 import java.util.ArrayList;
@@ -34,7 +61,6 @@ public class Simulation {
             smoker.start();
             smokers.add(smoker);
 
-            agent.addSmokers(smokers);
             agent.start();
 
         try {
