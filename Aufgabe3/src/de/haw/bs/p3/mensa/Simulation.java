@@ -1,3 +1,24 @@
+/**
+ * @startuml
+ * Simulation -- Till
+ * Simulation -- Student
+ *
+ * Simulation:void start()
+ *
+ * SimulationException:
+ *
+ * Till:Semaphore semaphore
+ * Till:List<Student> waitingLine
+ * Till:int getQueueSize()
+ * Till:void add(Student student)
+ * Till:void pay(Student student)
+ * Till:void run()
+ *
+ * Student:List<Till> tills
+ * Student:Semaphore semaphore
+ * Student:void run()
+ * @enduml
+ */
 package de.haw.bs.p3.mensa;
 
 import java.util.ArrayList;
