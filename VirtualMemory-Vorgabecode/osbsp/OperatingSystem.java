@@ -335,6 +335,8 @@ public class OperatingSystem {
       // Statistische Zählung
       eventLog.incrementReadAccesses();
 
+      pte.referenced = true;
+
       // reale addresse im speicher
       int wordAddr = pte.realPageFrameAdr + offset;
       return readFromRAM(wordAddr);
