@@ -326,6 +326,15 @@ public class OperatingSystem {
           return -1;
       }
 
+      // Seite vorhanden: Seite valid (im RAM)?
+      if (!pte.valid) {
+          // Seite nicht valid (also auf Platte --> Seitenfehler):
+          pte = handlePageFault(pte, pid);
+      }
+
+      // Statistische Zählung
+      eventLog.incrementReadAccesses();
+
       // reale addresse im speicher
       int wordAddr = pte.realPageFrameAdr + offset;
       return readFromRAM(wordAddr);

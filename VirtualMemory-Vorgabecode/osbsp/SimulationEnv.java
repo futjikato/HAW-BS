@@ -21,7 +21,7 @@ public class SimulationEnv {
 	 * Anzahl an erzeugten Prozessen (1 reicht für die Auswertung der
 	 * Seitenfehlerrate)
 	 */
-	public static final int NUM_OF_PROCESSES = 1;
+	public static final int NUM_OF_PROCESSES = 2;
 
 	/**
 	 * Main-Methode zum Start der Simulation
@@ -50,7 +50,7 @@ public class SimulationEnv {
 		os.setDEFAULT_LOCALITY_FACTOR(1); 
 
 		// Testausgaben erwünscht? Wenn true, dann simulationTime auf max. 100 ms setzen!
-		os.setTestMode(false); 
+		os.setTestMode(false);
 
 		// ------------------------- Parameter setzen Ende
 		// -----------------------------------------------
