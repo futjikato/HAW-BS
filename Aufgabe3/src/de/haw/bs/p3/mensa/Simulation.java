@@ -2,6 +2,7 @@
  * @startuml
  * Simulation -- Till
  * Simulation -- Student
+ * Simulation -- SimulationException
  *
  * Simulation:void start()
  *
@@ -12,7 +13,6 @@
  * Till:int getQueueSize()
  * Till:void add(Student student)
  * Till:void pay(Student student)
- * Till:void run()
  *
  * Student:List<Till> tills
  * Student:Semaphore semaphore

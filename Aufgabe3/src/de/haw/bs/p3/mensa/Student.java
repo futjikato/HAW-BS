@@ -70,6 +70,8 @@ public class Student extends Thread {
                 interrupt();
             }
         }
+
+        System.out.println(String.format("%s ist fertig", this));
     }
 
     @Override

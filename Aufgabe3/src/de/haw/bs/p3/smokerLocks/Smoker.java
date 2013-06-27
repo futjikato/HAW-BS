@@ -44,9 +44,6 @@ public class Smoker extends Thread {
                     System.out.println(String.format("%s consumes ingredients and smokes a cigarette.", this));
                     sleep(500);
 
-                    System.out.println(String.format("%s forces agent to update his ingredients.", this));
-                    agent.refresh();
-
                     condition.signal();
                 } else {
                     System.out.println(String.format("%s is unable to use the available ingredients.", this));
@@ -58,6 +55,8 @@ public class Smoker extends Thread {
             	lock.unlock();
             }
         }
+
+        System.out.println(String.format("%s has finished.", this));
     }
 
     @Override

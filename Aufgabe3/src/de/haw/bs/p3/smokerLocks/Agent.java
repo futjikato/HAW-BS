@@ -39,12 +39,17 @@ public class Agent extends Thread {
             try {
                 condition.signalAll();
                 condition.await();
+
+                // refresh ingredients
+                refresh();
             } catch (InterruptedException e) {
                 interrupt();
             } finally {
             	lock.unlock();
             }
         }
+
+        System.out.println("Agent has finished");
     }
 
     public Collection<Ingredient> getAvailableIngredients() {

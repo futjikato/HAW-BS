@@ -24,11 +24,16 @@ public class Agent extends Thread {
                 synchronized (this) {
                     notifyAll();
                     wait();
+
+                    // refresh ingredient list
+                    refresh();
                 }
             } catch (InterruptedException e) {
                 interrupt();
             }
         }
+
+        System.out.println("Agent has finished");
     }
 
     public Collection<Ingredient> getAvailableIngredients() {

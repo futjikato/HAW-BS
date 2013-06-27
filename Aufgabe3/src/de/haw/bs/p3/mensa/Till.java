@@ -51,9 +51,13 @@ public class Till {
         // acquire payment semaphore
         semaphore.acquire();
 
-        // payment takes up to 100 ms
-        long time = (long)(Math.random() * 100);
-        Thread.currentThread().sleep(time);
+        try {
+            // payment takes up to 100 ms
+            long time = (long)(Math.random() * 100);
+            Thread.currentThread().sleep(time);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
 
         // print info
         System.out.println(String.format("%s has payed at till no.%d with %d students in queue", student, number, getQueueSize()));
